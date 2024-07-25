@@ -27,11 +27,24 @@ extension String {
         // https://tossteam.slack.com/archives/C7V49P7A9/p1661826985586599
         let generalDelimitersToEncode = ":#[]@/"
         let subDelimitersToEncode = "!$&'()*+,;="
+        // " (따옴표)를 추가로 허용
+        let additionalAllowedCharacters = "\""
 
         var allowedCharacterSet = CharacterSet.urlQueryAllowed
         allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
-        allowedCharacterSet.insert(charactersIn: allowedCharacters)
+        allowedCharacterSet.insert(charactersIn: allowedCharacters + additionalAllowedCharacters)
 
         return stringSelf.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? stringSelf
+    }
+}
+
+extension String {
+    var jsonEscaped: String {
+        let data = try? JSONSerialization.data(withJSONObject: [self], options: [])
+        if let encodedString = String(data: data!, encoding: .utf8) {
+            // 문자열 앞뒤의 대괄호([]) 제거
+            return String(encodedString.dropFirst().dropLast())
+        }
+        return self
     }
 }
