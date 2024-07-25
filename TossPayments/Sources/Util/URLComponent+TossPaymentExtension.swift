@@ -27,12 +27,10 @@ extension String {
         // https://tossteam.slack.com/archives/C7V49P7A9/p1661826985586599
         let generalDelimitersToEncode = ":#[]@/"
         let subDelimitersToEncode = "!$&'()*+,;="
-        // " (따옴표)를 추가로 허용
-        let additionalAllowedCharacters = "\""
 
         var allowedCharacterSet = CharacterSet.urlQueryAllowed
         allowedCharacterSet.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
-        allowedCharacterSet.insert(charactersIn: allowedCharacters + additionalAllowedCharacters)
+        allowedCharacterSet.insert(charactersIn: allowedCharacters)
 
         return stringSelf.addingPercentEncoding(withAllowedCharacters: allowedCharacterSet) ?? stringSelf
     }
