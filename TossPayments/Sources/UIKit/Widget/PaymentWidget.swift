@@ -206,8 +206,14 @@ public final class PaymentWidget: NSObject, HandleURLResult {
         requestJSONObject?["failUrl"] = WebConstants.failURL
         let jsonString = requestJSONObject?.jsonString ?? ""
         
+        // JSON 문자열을 직접 인코딩하여 안전하게 만듭니다.
+        let encodedJSONString = jsonString
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
+            .replacingOccurrences(of: "\'", with: "\\\'")
+        
         let javascriptString = """
-        widget.requestPaymentForNativeSDK(\(jsonString));
+        widget.requestPaymentForNativeSDK(\(encodedJSONString));
         """
         guard let encodedScript = javascriptString.urlEncoded.data(using: .utf8)?.base64EncodedString() else { return }
         DispatchQueue.main.async {
