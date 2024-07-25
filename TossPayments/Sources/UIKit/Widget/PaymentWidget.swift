@@ -216,7 +216,7 @@ public final class PaymentWidget: NSObject, HandleURLResult {
             var script = decodeURIComponent(window.atob('\(encodedScript)'));
             eval(script);
             """) { (_, error) in
-                
+                print("evaluateJavaScript Error", error?.localizedDescription as? String ?? "")
             }
         }
     }
