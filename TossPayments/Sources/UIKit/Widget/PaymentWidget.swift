@@ -213,7 +213,11 @@ public final class PaymentWidget: NSObject, HandleURLResult {
         print("jsonString: ", jsonString)
         print("javascriptString : ", javascriptString)
         
-        guard let encodedScript = javascriptString.urlEncoded.data(using: .utf8)?.base64EncodedString() else { return }
+        let temp = javascriptString.urlEncoded
+        
+        print("temp String:", temp)
+        
+        guard let encodedScript = temp.data(using: .utf8)?.base64EncodedString() else { return }
         DispatchQueue.main.async {
             self.paymentMethodWidget?.evaluateJavaScript(
             """
